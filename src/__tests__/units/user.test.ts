@@ -1,3 +1,4 @@
+import { userMoks, userMoksId } from "../../__moks__/user.moks"
 import { User } from "../../classes/user.classes"
 import { dataBase, resetDataBase } from "../../dataBase/dataBase"
 
@@ -10,24 +11,17 @@ describe("Unit test: User Classe", () => {
     
     test("criar novo usuario", () => {
         const user = new User()
-        const data = user.create({name: "Albert", email: "albert@email.com"})
+        const data = user.create(userMoksId)
 
-        expect(data).toStrictEqual({
-            id: 1,
-            name: "Albert",
-            email: "albert@email.com"
-        })
+        expect(data).toStrictEqual(userMoks)
     })
 
     test("ler dataBase", () => {
-        dataBase.push({
-            id: 1,
-            name: "Flavia",
-            email: "flavia@email.com"
-        })
+        dataBase.push(userMoksId)
         
         const user = new User()
 
         expect(user.read()).toHaveLength(1)
+        expect(dataBase[0]).toStrictEqual(userMoks)
     })
 })
