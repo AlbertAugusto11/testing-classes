@@ -1,12 +1,14 @@
-import { IUser } from "../classes/user.classes"
+import { ITodo } from "../interfaces/todo.interfaces";
 
-export let dataBase: IUser[] = []
-export const resetDataBase = () => {
-    dataBase = []
+let id = 0;
 
+export let todoDatabase: ITodo[] = [];
+
+export const resetDatabase = () => {
+    todoDatabase = [];
 }
-export const createId = () => {
-    let id = 0
-    id++
-    return id
+
+export const generateId = () => {
+    id++;
+    return id;
 }
