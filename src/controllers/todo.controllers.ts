@@ -3,55 +3,39 @@ import { ITodo } from "../interfaces/todo.interfaces";
 import { TodoServices } from "../services/todo.services";
 
 export class TodoControllers{
-    getMany(req: Request, res: Response): Response<ITodo[]>{
+    async getMany(req: Request, res: Response): Promise<Response<ITodo[]>>{
         const todoServices = new TodoServices();
 
-        const response = todoServices.getMany();
+        const response = await todoServices.getMany();
 
         return res.status(200).json(response);
     }
-
-    getToId(req: Request, res: Response) {
-        const todoServices = new TodoServices();
-
-        const response = todoServices.getToId(req.params.id)
-
-        if(response != "Not Found") {
-            return res.status(200).json(response)
-        }else {
-            return res.status(404).json(response)
-        }
-    }
     
-    create(req: Request, res: Response): Response<ITodo>{
+    async create(req: Request, res: Response): Promise<Response<ITodo>>{
         const todoServices = new TodoServices();
 
-        const response = todoServices.create(req.body);
+        const response = await todoServices.create(req.body);
 
         return res.status(201).json(response);
     }
 
-    update(req: Request, res: Response) {
-        const todoServices = new TodoServices()
+    async update(req: Request, res: Response): Promise<Response<ITodo>>{
+        const id = req.params.id;
 
-        const response = todoServices.update(req.body, req.params.id)
+        const todoServices = new TodoServices();
 
-        if(response != "Item não Encontrado") {
-            return res.status(200).json(response)
-        } else {
-            return res.status(404).json(response)
-        }
+        const response = await todoServices.update(req.body, id);
+
+        return res.status(200).json(response);
     }
 
-    delete(req: Request, res: Response) {
-        const todoServices = new TodoServices()
+    async delete(req: Request, res: Response): Promise<Response<void>>{
+        const id = req.params.id;
 
-        const response = todoServices.delete(req.params.id)
+        const todoServices = new TodoServices();
 
-        if(response == "Item Deletado") {
-            return res.status(200).json(response)
-        } else {
-            return res.status(404).json(response)
-        }
+        const response = await todoServices.delete(id);
+
+        return res.status(204).json(response);
     }
 }

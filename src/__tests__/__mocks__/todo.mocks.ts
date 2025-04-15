@@ -1,8 +1,8 @@
 export const todoCreateBodyMock = { title: "Título", content: "Conteúdo" };
 
-export const todoMock = { id: 1, title: "Título", content: "Conteúdo" };
+export const todoUpdateBodyMock = { content: "Conteúdo atualizado" };
 
-export const updateMock = {title: "Olá Mundo", content: "Conteudo do Livro AQUI"}
+export const todoMock = { id: 1, title: "Título", content: "Conteúdo" };
 
 export const todoListMock = [
     { id: 1, title: "Título", content: "Conteúdo" },

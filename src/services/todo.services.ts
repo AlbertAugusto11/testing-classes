@@ -1,53 +1,30 @@
-import { generateId, todoDatabase } from "../database/database";
-import { ITodo, TCreateTodoBody } from "../interfaces/todo.interfaces";
+import { prisma } from "../database/prisma";
+import { ITodo, TCreateTodoBody, TUpdateTodoBody } from "../interfaces/todo.interfaces";
 
 export class TodoServices {
-    getMany() {
-        return todoDatabase;
-    }
+   async getMany(): Promise<ITodo[]> {
+      const todoList = await prisma.todo.findMany();
 
-    getToId(id: string) {
-        const getToId = todoDatabase.find(todo => todo.id === Number(id))
+      return todoList;
+   }
 
-        if (getToId) {
-            return getToId
-        } else {
-            return "Not Found"
-        }
-    }
+   async create(body: TCreateTodoBody): Promise<ITodo> {
+      const newTodo = await prisma.todo.create({ data: body });
 
-    create(body: TCreateTodoBody): ITodo {
-        const newTodo = { id: generateId(), ...body };
+      return newTodo;
+   }
 
-        todoDatabase.push(newTodo);
+   async update(body: TUpdateTodoBody, updatingId: string): Promise<ITodo> {
+      const updateTodo = await prisma.todo.update({
+         data: body,
+         where: { id: updatingId },
+      });
 
-        return newTodo;
-    }
+      return updateTodo;
+   }
 
-    update(body: TCreateTodoBody, id: string) {
-        const findTodo = todoDatabase.findIndex(todo => todo.id === Number(id))
-
-        if(findTodo != -1) {
-            const updateItem = {...body, id: Number(id)}
-            todoDatabase.splice(findTodo,1,updateItem)
-
-            return updateItem
-        } else {
-            
-            return "Item não Encontrado"
-        }
-    }
-
-    delete(id: string) {
-        const findTodo = todoDatabase.findIndex(todo => todo.id === Number(id))
-
-        if (findTodo != -1) {
-            todoDatabase.splice(findTodo, 1)
-
-            return "Item Deletado"
-        } else {
-            return "Item não Encontrado"
-        }
-    }
-
+   async delete(removingId: string): Promise<void> {
+      await prisma.todo.delete({ where: { id: removingId } });
+   }
 }
+
